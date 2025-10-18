@@ -22,6 +22,17 @@ CREATE TABLE tb_livro(
     ano_pub		DATE			NOT NULL
 );
 
+CREATE TABLE tb_emprestimo(
+	id_emprestimo 			INT 			AUTO_INCREMENT PRIMARY KEY
+    ,data_horario_retirada	DATETIME		NOT NULL
+    ,data_horario_devolucao	DATETIME		NOT NULL
+    ,id_cliente				INT				NOT NULL -- CHAVE ESTRANGEIRA
+    ,id_livro				INT				NOT NULL -- CHAVE ESTRANGEIRA
+    
+    ,FOREIGN KEY (id_cliente) REFERENCES tb_cliente(id_cliente)
+    ,FOREIGN KEY (id_livro) REFERENCES tb_livro(id_livro) 
+);
+
 INSERT INTO tb_cliente(nome,data_nasc,endereco,telefone,celular,email,CPF)
 VALUES
 (
@@ -41,5 +52,15 @@ VALUES
 ,'J.K. Rowling'
 ,'2000-01-01'
 );
-
-SELECT * FROM tb_cliente
+ 
+ INSERT INTO tb_emprestimo(data_horario_retirada,data_horario_devolucao,id_cliente,id_livro) 
+ VALUES
+ (
+	'2025-10-18 10:18:40'
+    ,'2025-10-28 10:18:40'
+    ,1
+    ,1
+ );
+ 
+ SELECT * FROM tb_emprestimo;
+ 
