@@ -1,47 +1,93 @@
+//instalado a biblio que permite entrada de dados
 import PromptSync from "prompt-sync";
 
+//aciona a função da biblio
 let prompt = PromptSync();
 
+
+//class é um modelo de algo(objeto)
 class Pessoa {
 
+    //atributo privado
     #senha;
 
-    constructor(nome,idade,dataNasc,senha, palavraChavePessoa) {
-        this.nome = nome;
-        this.idade = idade;
-        this.dataNasc = new Date(dataNasc).toLocaleString("pt-BR");
-        this.#senha = senha;
-        this.palavraChavePessoa = palavraChavePessoa;
-    }
-    apresentar() {
-        console.log(`Olá, meu nome é ${this.nome}, tenho ${this.idade} anos, nasci em ${this.dataNasc}.`);
+    //construtor constroi mais de um objeto
+    //para por os valores de cada obj, colocamos via parametro
+    constructor(nome, dataNasc, senha) {
+        this.nome = nome
+        this.dataNasc = new Date(dataNasc).toLocaleString("pt-BR")
+        this.#senha = senha
     }
 
-   get senha(){
-        const palavraChave = prompt("Digite a palavra chave para acessar a senha: ");
-        if( this.palavraChavePessoa === palavraChave){
-            console.log(`Senha: ${this.#senha}`);
-        } else {
-            return "Palavra chave incorreta. Acesso negado.";
-        }
-   }
+    apresentar(){
+        console.log(`Olá, meu nome é ${this.nome}, nasci em ${this.dataNasc}.`);
+    }
 };
 
-let nomePessoa = prompt("Digite o nome: ");
-let idadePessoa = parseInt(prompt("Digite a idade: "));
-let dataNascPessoa = prompt("Digite a data de nascimento (AAAA-MM-DD): ");
-let senhaPessoa = prompt("Digite a senha: ");
-let palavraChavePessoa = prompt("Defina uma palavra chave para proteger sua senha: ");
+class Aluno extends Pessoa {
+    constructor(tipo, nome, idade, dataNasc, RA) {
+        super(nome, idade, dataNasc);
+        this.tipo = tipo;
+        this.RA = RA
 
-const novaPessoa = new Pessoa(
-    nomePessoa,
-    idadePessoa,
-    dataNascPessoa,
-    senhaPessoa,
-    palavraChavePessoa
-);
+        
+    }
+    apresentar(){
+        console.log(`Olá, sou um ${this.tipo}, meu nome é ${this.nome}, nasci em ${this.dataNasc} e meu RA é ${this.RA}.`);
+    }
+};
 
-novaPessoa.apresentar();
-novaPessoa.senha;
+class Professor extends Pessoa {
+    constructor(tipo, nome, idade, dataNasc, salario, registroProf) {
+        super(nome, idade, dataNasc);
+        this.tipo = tipo;
+        this.salario = salario;
+        this.registroProf = registroProf;
+    }
+    apresentar(){
+        console.log(`Olá, sou um ${this.tipo}, meu nome é ${this.nome}, nasci em ${this.dataNasc}, meu salário é ${this.salario} e meu registro profissional é ${this.registroProf}.`);
+    }
+};
+
+let opcao = prompt("Você é um (a) \n1 - Aluno \n2 - Professor \nDigite a opção: ");
+
+let novaPessoa;
+
+let nomePessoa = prompt("Digite o seu nome: ");
+let dataNascPessoa = prompt("Digite sua data de nascimento no formato AAAA/MM/DD: ");
+let senhaPessoa = prompt("Digite sua senha: ");
+
+
+if (opcao == '1') {
+    let tipo = "Aluno";
+    let raAluno = prompt("Digite o seu RA: ");
+
+    const novoAluno = new Aluno(
+        tipo, 
+        nomePessoa, 
+        dataNascPessoa, 
+        senhaPessoa, 
+        raAluno
+    );
+    novaPessoa = novoAluno;
+    console.log(novaPessoa.apresentar());
+
+} else if (opcao == '2') {
+    let tipo = "Professor";
+    let salario = prompt("Digite o seu salário: ");
+    let registroProf = prompt("Digite o seu registro profissional: ");
+    const novoProfessor = new Professor(
+        tipo, 
+        nomePessoa,
+        dataNascPessoa,
+        senhaPessoa,
+        salario,
+        registroProf
+    );
+    novaPessoa = novoProfessor;
+    console.log(novaPessoa.apresentar());
+} else {
+    console.log("Opção inválida!");
+}
 
 console.log(novaPessoa);
